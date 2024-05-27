@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Realtime Markdown Viewer</title>
+    <script src="https://cdn.jsdelivr.net/npm/@unocss/runtime"></script>
+  </head>
+
+  <body class="w-screen h-screen ma-0 box-border pa-2">
+    <section class="flex w-full h-full">
+      <textarea class="flex-1" id="pad">Write your text here.</textarea>
+      <div class="flex-1 ml-2" id="markdown"></div>
+    </section>
+
+    <script src="https://cdn.rawgit.com/showdownjs/showdown/1.0.2/dist/showdown.min.js"></script>
+    <script src="pad.js"></script>
+  </body>
+</html>
