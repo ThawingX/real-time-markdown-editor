@@ -1,20 +1,19 @@
-# 使用Node.js官方提供的镜像作为基础镜像
-FROM node:14
+# 选择Node.js 18的基础镜像
+FROM node:18
 
-# 设置工作目录
+LABEL maintainer="thawingx@gmail.com"
+
+# 设置容器内的工作目录
 WORKDIR /usr/src/app
 
-# 将package.json和package-lock.json复制到工作目录
-COPY package*.json ./
+# 复制package.json和pnpm-lock.yaml到工作目录
+COPY package.json pnpm-lock.yaml ./
 
-# 安装应用依赖
-RUN npm install
+# 使用pnpm安装依赖
+RUN npm install -g pnpm && pnpm install
 
-# 将应用源代码复制到工作目录
+# 复制项目文件到工作目录
 COPY . .
 
-# 暴露容器的端口
-EXPOSE 3000
-
-# 定义容器启动命令
-CMD ["node", "server.js"]
+# 设置容器启动时执行的命令
+CMD ["pnpm", "dev"]

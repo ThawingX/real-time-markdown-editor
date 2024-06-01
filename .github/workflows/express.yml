@@ -11,13 +11,24 @@ on:
 jobs:
   # 定义一个 job，id 为 build
   build:
-    # 指定任务执行的运行器。latest 表示是 GitHub 提供的最新稳定映像，但可能不是操作系统供应商提供的最新版本.
-    runs-on: ubuntu-latest
-
-    # 定义 job 的具体步骤
+    name: Build # job 的名字
+    runs-on: ubuntu-latest # 指定任务执行的运行器。latest 表示是 GitHub 提供的最新稳定映像，但可能不是操作系统供应商提供的最新版本.
     steps: # 每一个 step 或者是执行一个 action，或者是执行一个命令
       - name: Checkout # 从仓库中检出代码，供下一步使用
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
+        with:
+          path: "/usr/local/checkouts"
+
+
+      - name: scp to Server # 传输文件到服务器
+        uses: cross-the-world/scp-pipeline@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          user: ${{ secrets.SERVER_USER }}
+          pass: ${{ secrets.SERVER_PASS }}
+          connect_timeout: 10s
+          local: "./*" # 源路径（工作流）
+          remote: /usr/local/github/hello-express # 目标路径（服务器）
 
       - name: Deploy to Server # 执行部署任务
         uses: appleboy/ssh-action@master
@@ -26,7 +37,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           password: ${{ secrets.SERVER_PASS }}
           script: |
-            ssh root@${{ secrets.SERVER_HOST }} 'docker stop my_container || true && docker rm my_container || true'
-            ssh root@${{ secrets.SERVER_HOST }} 'docker pull your_docker_image'
-            ssh root@${{ secrets.SERVER_HOST }} 'docker run -d --name my_container -p 3000:3000 your_docker_image'
-
+            cd /usr/local/github/hello-express
+            docker build -t helloExpress .
+            docker run -d -p 3030:3030 helloExpress
+            
