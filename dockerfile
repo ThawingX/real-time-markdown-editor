@@ -10,7 +10,7 @@ WORKDIR /usr/src/app
 COPY package.json pnpm-lock.yaml ./
 
 # 使用pnpm安装依赖
-RUN npm install -g pnpm && pnpm install
+RUN npm install -g pnpm  && pnpm install
 
 # 复制项目文件到工作目录
 COPY . .
