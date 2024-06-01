@@ -35,6 +35,6 @@ jobs:
           password: ${{ secrets.SERVER_PASS }}
           script: |
             cd /usr/local/github/hello-express
-            docker build -t helloExpress .
-            docker run -d -p 3030:3030 helloExpress
+            docker build -t hello-express .
+            docker run -d -p 3030:3030 hello-express
             
