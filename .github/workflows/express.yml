@@ -16,9 +16,6 @@ jobs:
     steps: # 每一个 step 或者是执行一个 action，或者是执行一个命令
       - name: Checkout # 从仓库中检出代码，供下一步使用
         uses: actions/checkout@v4
-        with:
-          path: "/usr/local/checkouts"
-
 
       - name: scp to Server # 传输文件到服务器
         uses: cross-the-world/scp-pipeline@master
